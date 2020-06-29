@@ -12,17 +12,13 @@ public class User {
     public String publicImageUrl;
 
 
-
-    public static User fromJSON(JSONObject json) {
+    // Takes a JSON user object and returns a User object
+    public static User fromJSON(JSONObject json) throws JSONException {
         User user = new User();
-        try {
-            user.name = json.getString("name");
-            user.screenName = json.getString("screen_name");
-            user.publicImageUrl = json.getString("url");
+        user.name = json.getString("name");
+        user.screenName = json.getString("screen_name");
+        user.publicImageUrl = json.getString("profile_image_url_https");
 
-        } catch (JSONException e) {
-            Log.e("User", e.toString());
-        }
         return user;
     }
 }
