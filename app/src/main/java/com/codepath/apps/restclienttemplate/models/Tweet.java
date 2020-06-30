@@ -17,7 +17,7 @@ public class Tweet {
     public static Tweet fromJSON(JSONObject json) throws JSONException {
         Tweet tweet = new Tweet();
         tweet.body = json.getString("text");
-        tweet.createdAt = json.getString("create_at");
+        tweet.createdAt = json.getString("created_at");
         tweet.user = User.fromJSON(json.getJSONObject("user"));
 
         return tweet;
@@ -30,5 +30,17 @@ public class Tweet {
             tweets.add(fromJSON(jsonArray.getJSONObject(i)));
         }
         return tweets;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
