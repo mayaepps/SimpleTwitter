@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             Glide.with(context).load(tweet.getUser().getPublicImageUrl()).into(ivProfileImage);
             tvRelativeTimestamp.setText(tweet.getRelativeTimeAgo());
         }
+    }
+
+    // Clean all elements of the recycler for the swipe to refresh feature:
+    public void clear() {
+        tweets.clear();
+        notifyDataSetChanged();
     }
 
 }

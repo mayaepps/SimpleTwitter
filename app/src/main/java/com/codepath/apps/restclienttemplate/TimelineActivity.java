@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class TimelineActivity extends AppCompatActivity {
     // Request code used by the activity, can be any number as long as it is unique to the request
     public static final int REQUEST_CODE = 17;
 
+    private SwipeRefreshLayout swipeContainer;
+
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -44,8 +47,9 @@ public class TimelineActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
 
-        // Find the recycler view
+        // Find the recycler view and swipe container view
         rvTweets = findViewById(R.id.rvTweets);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
         // Initialize the list of tweets in adapter
         tweets = new ArrayList<>();
@@ -56,6 +60,15 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setAdapter(tweetsAdapter);
 
         populateHomeTimeline();
+
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Call the API to get the new tweets and populate them into the timeline (a refresh)
+                populateHomeTimeline();
+            }
+        });
     }
 
     private void populateHomeTimeline() {
@@ -65,9 +78,16 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onSuccess " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
+                    // Clear out old items before appending in the new ones
+                    tweetsAdapter.clear();
+
+                    // ...the data has come back, add new items to your adapter...
                     tweets.addAll(Tweet.fromJSONArray(jsonArray));
-                    Log.d(TAG, tweets.toString());
                     tweetsAdapter.notifyDataSetChanged();
+
+                    // signal that the refresh has completed
+                    swipeContainer.setRefreshing(false);
+
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
                 }
