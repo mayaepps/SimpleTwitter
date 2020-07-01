@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -87,7 +88,9 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.compose) {
             // Compose item has been tapped
-            Toast.makeText(this, "Compose a new Tweet", Toast.LENGTH_LONG).show();
+            // Navigate to the compose activity
+            Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+            startActivity(i);
             return true;
 
         }

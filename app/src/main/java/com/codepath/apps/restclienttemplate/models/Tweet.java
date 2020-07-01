@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class Tweet {
+
+    private static final String LOG = "TWEET";
+    public static final String TWITTER_DATE_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
     public String body;
     public String createdAt;
@@ -37,22 +41,27 @@ public class Tweet {
         return tweets;
     }
 
-    // Method from https://gist.github.com/nesquena/f786232f5ef72f6e10a7 to parse a relative twitter date
+    // Method mostly from https://gist.github.com/nesquena/f786232f5ef72f6e10a7 to parse a relative twitter date
     // For example: getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
     public String getRelativeTimeAgo() {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
+        SimpleDateFormat simpleFormat = new SimpleDateFormat(TWITTER_DATE_FORMAT, Locale.ENGLISH);
+
+        //if the date is in an unusual format, the parser should be lenient and try other formats
+        simpleFormat.setLenient(true);
 
         String relativeDate = "";
         try {
-            long dateMillis = sf.parse(getCreatedAt()).getTime();
+            //get the time of the tweet's creation
+            long dateMillis = simpleFormat.parse(getCreatedAt()).getTime();
+            // given the current date, get how much time has passed since the tweet's creation
             relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS,
+                    // Abbreviate the date so "hours" becomes "hrs" and "minutes" becomes "mins"
+                    DateUtils.FORMAT_ABBREV_RELATIVE).toString();
 
+        } catch (ParseException e) {
+            Log.e(LOG, "Error when parsing the date: " + e.getStackTrace());
+        }
         return relativeDate;
     }
 
