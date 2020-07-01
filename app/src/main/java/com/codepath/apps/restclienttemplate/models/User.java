@@ -1,16 +1,18 @@
 package com.codepath.apps.restclienttemplate.models;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class User {
 
     public String name;
     public String screenName;
     public String publicImageUrl;
 
+    // Empty constructer needed by the Parceler library
+    public User() {}
 
     // Takes a JSON user object and returns a User object
     public static User fromJSON(JSONObject json) throws JSONException {
