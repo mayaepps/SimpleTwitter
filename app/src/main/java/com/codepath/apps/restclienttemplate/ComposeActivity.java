@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.parceler.Parcels;
@@ -24,10 +26,10 @@ public class ComposeActivity extends AppCompatActivity {
 
 
     public static final String TAG = "ComposeActivity";
-    public static final int MAX_TWEET_LENGTH = 140;
+    public static final int MAX_TWEET_LENGTH = 280;
     public static final String INTENT_NAME_TWEET = "tweet";
 
-    EditText etCompose;
+    TextInputEditText etCompose;
     Button btnTweet;
 
     TwitterClient client;
