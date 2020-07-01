@@ -79,7 +79,7 @@ public class ComposeActivity extends AppCompatActivity {
                             finish();
 
                         } catch (JSONException e) {
-                            Log.e(TAG, "Exception parsing Tweet object from JSON tweet returned from Twitter.");
+                            Log.e(TAG, "Exception parsing Tweet object from JSON tweet returned by Twitter.");
                         }
                     }
 

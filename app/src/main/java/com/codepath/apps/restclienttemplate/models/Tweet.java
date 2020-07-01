@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +24,7 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public String mediaUrl ;
 
     // Empty constructer for Parceler library
     public Tweet() { }
@@ -33,6 +35,12 @@ public class Tweet {
         tweet.body = json.getString("text");
         tweet.createdAt = json.getString("created_at");
         tweet.user = User.fromJSON(json.getJSONObject("user"));
+
+        try {
+            tweet.mediaUrl = json.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+        } catch (Exception e) {
+            // It's fine for the tweet not to have media
+        }
 
         return tweet;
     }
@@ -80,5 +88,9 @@ public class Tweet {
 
     public User getUser() {
         return user;
+    }
+
+    public String getMediaUrl() {
+        return mediaUrl;
     }
 }
