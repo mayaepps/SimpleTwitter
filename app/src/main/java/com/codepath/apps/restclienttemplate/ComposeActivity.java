@@ -43,8 +43,16 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
+
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
+
+        Intent i = getIntent();
+
+        if (i.hasExtra(Tweet.class.getSimpleName())) {
+            Tweet replyTweet = Parcels.unwrap(i.getParcelableExtra(Tweet.class.getSimpleName()));
+            etCompose.setText("@" + replyTweet.getUser().getScreenName() + " ");
+        }
 
         client = TwitterApp.getRestClient(this);
 
@@ -57,11 +65,14 @@ public class ComposeActivity extends AppCompatActivity {
                 if (tweetContent.isEmpty()) { // If they try to publish a tweet without writing anything
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet cannot be empty!", Toast.LENGTH_LONG).show();
                     return;
+
                 } else if (tweetContent.length() > MAX_TWEET_LENGTH) { // If the proposed tweet is over Twitter's max character limit
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 Toast.makeText(ComposeActivity.this, "Tweeting: " + tweetContent, Toast.LENGTH_LONG).show();
+
                 // Make an API call to Twitter to publish the tweet
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
@@ -70,16 +81,7 @@ public class ComposeActivity extends AppCompatActivity {
                             // parse the returned Tweet to get the text of the published tweet
                             Tweet returnedTweet = Tweet.fromJSON(json.jsonObject);
 
-                            // Create a new intent and put the tweet in it to go back to parent activity
-                            Intent intent = new Intent();
-                            // Make returnedTweet model into a Parcel object which the intent can handle
-                            intent.putExtra(INTENT_NAME_TWEET, Parcels.wrap(returnedTweet));
-
-                            // Set result code and bundle data for response
-                            setResult(RESULT_OK);
-
-                            // Close the activity and pass tweet to parent
-                            finish();
+                            sendTweetToTimeline(returnedTweet);
 
                         } catch (JSONException e) {
                             Log.e(TAG, "Exception parsing Tweet object from JSON tweet returned by Twitter.");
@@ -95,6 +97,20 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void sendTweetToTimeline(Tweet returnedTweet) {
+
+        // Create a new intent and put the tweet in it to go back to parent activity
+        Intent intent = new Intent(ComposeActivity.this, TimelineActivity.class);
+        // Make returnedTweet model into a Parcel object which the intent can handle
+        intent.putExtra(INTENT_NAME_TWEET, Parcels.wrap(returnedTweet));
+
+        // Set result code and bundle data for response
+        setResult(RESULT_OK);
+
+        // Close the activity and pass tweet to parent
+        finish();
     }
 
 }

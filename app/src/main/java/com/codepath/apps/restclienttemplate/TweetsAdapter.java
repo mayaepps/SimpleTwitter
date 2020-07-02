@@ -1,12 +1,15 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,16 +18,26 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
+    public interface OnClickListener {
+        void onReplyClick(int position);
+
+    }
+
+
     Context context;
     List<Tweet> tweets;
+    OnClickListener clickListener;
 
-    public TweetsAdapter(Context context, List<Tweet> tweets) {
+    public TweetsAdapter(Context context, List<Tweet> tweets, OnClickListener clickListener) {
         this.context = context;
         this.tweets = tweets;
+        this.clickListener = clickListener;
     }
 
     // For each row, inflate a layout
@@ -46,6 +59,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     }
 
+
+    // Clean all elements of the recycler for the swipe to refresh feature:
+    public void clear() {
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return tweets.size();
@@ -59,6 +79,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvRelativeTimestamp;
         ImageView ivMedia;
         TextView tvName;
+        ImageView ivReply;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +89,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvRelativeTimestamp = itemView.findViewById(R.id.tvRelativeTimestamp);
             ivMedia = itemView.findViewById(R.id.ivMedia);
             tvName = itemView.findViewById(R.id.tvName);
+            ivReply = itemView.findViewById(R.id.ivReply);
+
+            ivReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onReplyClick(getAdapterPosition());
+                }
+            });
         }
 
         // Bind the Tweet object to the item_tweet view by setting each of the views using tweet parameter
@@ -84,12 +113,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivMedia.setVisibility(View.GONE);
             }
         }
-    }
-
-    // Clean all elements of the recycler for the swipe to refresh feature:
-    public void clear() {
-        tweets.clear();
-        notifyDataSetChanged();
     }
 
 }

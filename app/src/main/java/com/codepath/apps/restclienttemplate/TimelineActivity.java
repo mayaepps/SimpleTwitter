@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -62,9 +63,27 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets = findViewById(R.id.rvTweets);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
+        //Instantiate my OnClickListener interface
+        TweetsAdapter.OnClickListener clickListener = new TweetsAdapter.OnClickListener() {
+            @Override
+            public void onReplyClick(int position) {
+                // make sure the position exists
+                if (position != RecyclerView.NO_POSITION) {
+                    // get the movie at the position just clicked on
+                    Tweet clickedTweet = tweets.get(position);
+
+                    Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+                    // serialize the clickedTweet using parceler with its name as the key
+                    intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(clickedTweet));
+                    //then start the activity
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+            }
+        };
+
         // Initialize the list of tweets in adapter
         tweets = new ArrayList<>();
-        tweetsAdapter = new TweetsAdapter(this, tweets);
+        tweetsAdapter = new TweetsAdapter(this, tweets, clickListener);
 
         // Set up recycler view: layout manager and the adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
