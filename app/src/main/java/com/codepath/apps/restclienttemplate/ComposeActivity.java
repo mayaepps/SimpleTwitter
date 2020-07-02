@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.databinding.ActivityComposeBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.button.MaterialButton;
@@ -33,8 +34,6 @@ public class ComposeActivity extends AppCompatActivity {
     public static final int MAX_TWEET_LENGTH = 280;
     public static final String INTENT_NAME_TWEET = "tweet";
 
-    TextInputEditText etCompose;
-    MaterialButton btnTweet;
 
     TwitterClient client;
 
@@ -43,24 +42,26 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
+        final ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
 
-        etCompose = findViewById(R.id.etCompose);
-        btnTweet = findViewById(R.id.btnTweet);
+        // layout of activity is stored in a special property called root
+        View view = binding.getRoot();
+        setContentView(view);
 
         Intent i = getIntent();
 
         if (i.hasExtra(Tweet.class.getSimpleName())) {
             Tweet replyTweet = Parcels.unwrap(i.getParcelableExtra(Tweet.class.getSimpleName()));
-            etCompose.setText("@" + replyTweet.getUser().getScreenName() + " ");
+            binding.etCompose.setText("@" + replyTweet.getUser().getScreenName() + " ");
         }
 
         client = TwitterApp.getRestClient(this);
 
         // Set a click listener on the button
-        btnTweet.setOnClickListener(new View.OnClickListener() {
+        binding.btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tweetContent = etCompose.getText().toString();
+                String tweetContent = binding.etCompose.getText().toString();
 
                 if (tweetContent.isEmpty()) { // If they try to publish a tweet without writing anything
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet cannot be empty!", Toast.LENGTH_LONG).show();
