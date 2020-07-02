@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbTwitterCompose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/twitter_blue">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textAlignment="viewStart"
+            android:src="@drawable/ic_twitter_logo_whiteonimage">
+        </ImageView>
+
+    </androidx.appcompat.widget.Toolbar>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,35 +32,40 @@
         android:id="@+id/etComposeParent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:counterEnabled = "true"
-        app:counterMaxLength = "280"
-        >
+        app:counterEnabled="true"
+        app:counterMaxLength="280">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCompose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/what_s_happening"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:ems="10"
             android:gravity="start|top"
+            android:hint="@string/what_s_happening"
             android:inputType="textMultiLine"
-            android:minLines="5"
             android:maxLength="280"
+            android:minLines="5"
 
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/twitter_blue"
         android:layout_below="@+id/etComposeParent"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
-        android:text="@string/tweet" />
+        android:textColor="@color/white"
+        android:text="@string/tweet">
+    </com.google.android.material.button.MaterialButton>
+
 </RelativeLayout>
+
+</LinearLayout>

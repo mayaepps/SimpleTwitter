@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
@@ -74,11 +75,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody.setText(tweet.getBody());
             tvScreenName.setText("@" + tweet.getUser().getScreenName());
             tvName.setText(tweet.getUser().getName());
-            Glide.with(context).load(tweet.getUser().getPublicImageUrl()).into(ivProfileImage);
+            Glide.with(context).load(tweet.getUser().getPublicImageUrl()).transform(new RoundedCorners(30)).into(ivProfileImage);
             tvRelativeTimestamp.setText(tweet.getRelativeTimeAgo());
             if (tweet.getMediaUrl() != null) {
                 ivMedia.setVisibility(View.VISIBLE);
-                Glide.with(context).load(tweet.getMediaUrl()).into(ivMedia);
+                Glide.with(context).load(tweet.getMediaUrl()).transform(new RoundedCorners(30)).into(ivMedia);
             } else {
                 ivMedia.setVisibility(View.GONE);
             }

@@ -2,11 +2,14 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -40,10 +43,18 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter tweetsAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tbTwitter);
+        // Set the Toolbar to act as the ActionBar for this Activity window.
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+
 
         client = TwitterApp.getRestClient(this);
 
@@ -71,11 +82,12 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     // Clear out old items before appending in the new ones
@@ -89,14 +101,14 @@ public class TimelineActivity extends AppCompatActivity {
                     swipeContainer.setRefreshing(false);
 
                 } catch (JSONException e) {
-                    Log.e(TAG, "Json exception", e);
+                    Log.e(TAG, "Exception parsing JSON object", e);
                 }
 
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure", throwable);
+                Log.e(TAG, "API request failed with status code " + statusCode + " and response " + response, throwable);
             }
         });
     }
@@ -105,10 +117,10 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         // must return true for the menu to be displayed
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.compose) {

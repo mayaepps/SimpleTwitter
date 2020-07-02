@@ -1,12 +1,15 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -30,7 +34,7 @@ public class ComposeActivity extends AppCompatActivity {
     public static final String INTENT_NAME_TWEET = "tweet";
 
     TextInputEditText etCompose;
-    Button btnTweet;
+    MaterialButton btnTweet;
 
     TwitterClient client;
 
@@ -92,4 +96,5 @@ public class ComposeActivity extends AppCompatActivity {
         });
 
     }
+
 }
