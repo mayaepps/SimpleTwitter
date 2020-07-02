@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FBFBFB"
         tools:context=".TimelineActivity">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:background="#FFFFFF" />
     </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

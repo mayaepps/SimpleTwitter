@@ -65,7 +65,6 @@ public class ComposeActivity extends AppCompatActivity {
                         try {
                             // parse the returned Tweet to get the text of the published tweet
                             Tweet returnedTweet = Tweet.fromJSON(json.jsonObject);
-                            Log.i(TAG, "Published tweet says: " + returnedTweet.body);
 
                             // Create a new intent and put the tweet in it to go back to parent activity
                             Intent intent = new Intent();

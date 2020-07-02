@@ -7,5 +7,8 @@
     <string name="intent_host">cprest</string>
     <string name="tweet">Tweet</string>
     <string name="what_s_happening">What\'s happening?</string>
+    <string name="profile_image">Profile image</string>
+    <string name="tweet_media">Tweet media</string>
+    <string name="compose">Compose</string>
 
 </resources>
