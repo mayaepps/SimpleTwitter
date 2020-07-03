@@ -56,14 +56,13 @@ public class TimelineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
-
         client = TwitterApp.getRestClient(this);
 
         // Find the recycler view and swipe container view
         rvTweets = findViewById(R.id.rvTweets);
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
-        //Instantiate my OnClickListener interface
+        //Instantiate my OnClickListener from the interface in TweetsAdapter
         TweetsAdapter.OnClickListener clickListener = new TweetsAdapter.OnClickListener() {
             @Override
             public void onReplyClick(int position) {
@@ -81,14 +80,16 @@ public class TimelineActivity extends AppCompatActivity {
             }
         };
 
-        // Initialize the list of tweets in adapter
         tweets = new ArrayList<>();
+
+        // The adapter is created the clickListener is passed in to be set on the views in the adapter
         tweetsAdapter = new TweetsAdapter(this, tweets, clickListener);
 
         // Set up recycler view: layout manager and the adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetsAdapter);
 
+        // Makes the API call to get the tweets and shows them on the screen
         populateHomeTimeline();
 
         // Setup refresh listener which triggers new data loading
@@ -101,8 +102,8 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-
-
+    // Method to populate the home timeline with Tweets:
+    // Calls the API through the client, clears old data, and replaces old tweets with new, parsed API response tweets
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
@@ -112,7 +113,6 @@ public class TimelineActivity extends AppCompatActivity {
                     // Clear out old items before appending in the new ones
                     tweetsAdapter.clear();
 
-                    // ...the data has come back, add new items to your adapter...
                     tweets.addAll(Tweet.fromJSONArray(jsonArray));
                     tweetsAdapter.notifyDataSetChanged();
 
@@ -120,7 +120,7 @@ public class TimelineActivity extends AppCompatActivity {
                     swipeContainer.setRefreshing(false);
 
                 } catch (JSONException e) {
-                    Log.e(TAG, "Exception parsing JSON object", e);
+                    Log.e(TAG, "Encountered an exception parsing JSON object returned from API: " + e.getMessage(), e);
                 }
 
             }
@@ -137,9 +137,11 @@ public class TimelineActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // must return true for the menu to be displayed
+        // Must return true for the menu to be displayed
         return true;
     }
+
+    // Called by the Activity bar (or stand-in Toolbar in this case) when an item in the bar is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.compose) {
@@ -148,7 +150,6 @@ public class TimelineActivity extends AppCompatActivity {
             Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
             startActivityForResult(i, REQUEST_CODE);
             return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -156,13 +157,14 @@ public class TimelineActivity extends AppCompatActivity {
     // When the other activity returns with a result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // Check that the activity is the same ComposeActitvity and the operation succeeded
+
+        // Check that the activity is from the same ComposeActitvity and the operation succeeded
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            // Get data from the intent (tweet)
+
+            // Get the extra parcel from the intent and unwrap it/parse it into a Tweet object
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra(ComposeActivity.INTENT_NAME_TWEET));
 
-            // Update the RecyclerView with this new Tweet
-            // Modify data source (tweets): add tweet at the beginning of the list of tweets for the feed
+            // Modify data source (tweets): add the new tweet at the beginning of the list of tweets for the feed
             tweets.add(0, tweet);
 
             // Notify the adapter that the data has changed at position 0 and it should reevaluate
@@ -170,8 +172,6 @@ public class TimelineActivity extends AppCompatActivity {
 
             // AdapterView scrolls up to the top of the list of tweets so the newly created tweet is visible
             rvTweets.smoothScrollToPosition(0);
-
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

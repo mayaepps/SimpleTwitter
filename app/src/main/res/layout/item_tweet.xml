@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:textAlignment="textEnd"
@@ -91,9 +91,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
+        android:contentDescription="@string/reply_icon"
+        android:scaleX="-1"
         android:src="@drawable/reply_icon"
-        android:tint="@color/medium_gray"
-        android:scaleX="-1">
+        android:tint="@color/medium_gray">
 
     </ImageView>
 

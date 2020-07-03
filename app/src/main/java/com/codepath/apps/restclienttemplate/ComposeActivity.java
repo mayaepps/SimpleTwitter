@@ -43,21 +43,25 @@ public class ComposeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_compose);
 
         final ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
-
         // layout of activity is stored in a special property called root
         View view = binding.getRoot();
         setContentView(view);
 
+        // Receive intent from Timeline Activity
         Intent i = getIntent();
 
+        // In the case that it is a reply tweet, must unwrap the tweet to put "@username" in the compose area
         if (i.hasExtra(Tweet.class.getSimpleName())) {
             Tweet replyTweet = Parcels.unwrap(i.getParcelableExtra(Tweet.class.getSimpleName()));
             binding.etCompose.setText("@" + replyTweet.getUser().getScreenName() + " ");
         }
 
+        // Gets the API client from TwitterApp
         client = TwitterApp.getRestClient(this);
 
-        // Set a click listener on the button
+        // Set an onclick listener on the "Tweet" button:
+        // Checks to make sure the tweet is valid and calls the API to publish the tweet
+        // then inserts the new tweet returned by the API manually into the timeline feed
         binding.btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +72,7 @@ public class ComposeActivity extends AppCompatActivity {
                     return;
 
                 } else if (tweetContent.length() > MAX_TWEET_LENGTH) { // If the proposed tweet is over Twitter's max character limit
-                    Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -82,33 +86,33 @@ public class ComposeActivity extends AppCompatActivity {
                             // parse the returned Tweet to get the text of the published tweet
                             Tweet returnedTweet = Tweet.fromJSON(json.jsonObject);
 
+                            // private method that uses intent to return to the TimelineActivity with the new tweet
                             sendTweetToTimeline(returnedTweet);
 
                         } catch (JSONException e) {
-                            Log.e(TAG, "Exception parsing Tweet object from JSON tweet returned by Twitter.");
+                            Log.e(TAG, "Exception parsing Tweet object from JSON tweet returned by Twitter " + e.getMessage(), e);
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "Failed to publish tweet, API returned status of " + statusCode + " and responded with " + response, throwable);
+                        Log.e(TAG, "Failed to publish tweet, API returned status of " + statusCode + " and response " + response, throwable);
                     }
                 });
-
             }
         });
-
     }
 
+    // Creates a new intent and uses putExtra() to send close the activity
+    // also sends the new tweet back to parent activity (TimelineActivity)
     private void sendTweetToTimeline(Tweet returnedTweet) {
 
-        // Create a new intent and put the tweet in it to go back to parent activity
         Intent intent = new Intent();
-        // Make returnedTweet model into a Parcel object which the intent can handle
+
         intent.putExtra(INTENT_NAME_TWEET, Parcels.wrap(returnedTweet));
 
         // Set result code and bundle data for response
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_OK, intent); // Note to self: don't forget the second parameter "intent" or your app will crash and you won't know why
 
         // Close the activity and pass tweet to parent
         finish();

@@ -17,14 +17,14 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:textAlignment="viewStart"
-            android:src="@drawable/ic_twitter_logo_whiteonimage">
+            android:src="@drawable/ic_twitter_logo_whiteonimage"
+            android:contentDescription="@string/twitter_logo_in_toolbar">
         </ImageView>
 
 
     </androidx.appcompat.widget.Toolbar>
 
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,7 +33,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FBFBFB"
         tools:context=".TimelineActivity">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -45,7 +44,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:background="#FFFFFF" />
+            android:background="@color/white" />
     </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
