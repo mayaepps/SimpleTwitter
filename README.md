@@ -2,7 +2,7 @@
 
 **Simple Twitter** is an android app that allows a user to view their Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **20** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -52,7 +52,7 @@ GIF created with [Kap](https://getkap.co/).
 
 ## Notes
 
-I had trouble wih my app crashing when I tried to retweet, although I don't think I changed anything from the previous commit, where it seemed to work fine. It seemed to be trouble with Parceler, and I couldn't figure it out for the longest time. It was actually that I hadn't called setResult correctly :(. I also had trouble with getting the replying to tweets to work correctly. Mostly, I struggled with finding time-consuming bugs. 
+I had trouble wih my app crashing when I tried to retweet, although I don't think I changed anything from the previous commit, where it seemed to work fine. It seemed to be trouble with Parceler, and I couldn't figure it out for the longest time. It was actually that I hadn't called setResult() correctly :(. I also had trouble with getting the replying to tweets to work correctly. Mostly, I struggled with finding time-consuming bugs. 
 
 ## Open-source libraries used
 
