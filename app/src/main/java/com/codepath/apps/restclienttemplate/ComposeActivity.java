@@ -103,12 +103,12 @@ public class ComposeActivity extends AppCompatActivity {
     private void sendTweetToTimeline(Tweet returnedTweet) {
 
         // Create a new intent and put the tweet in it to go back to parent activity
-        Intent intent = new Intent(ComposeActivity.this, TimelineActivity.class);
+        Intent intent = new Intent();
         // Make returnedTweet model into a Parcel object which the intent can handle
         intent.putExtra(INTENT_NAME_TWEET, Parcels.wrap(returnedTweet));
 
         // Set result code and bundle data for response
-        setResult(RESULT_OK);
+        setResult(RESULT_OK, intent);
 
         // Close the activity and pass tweet to parent
         finish();

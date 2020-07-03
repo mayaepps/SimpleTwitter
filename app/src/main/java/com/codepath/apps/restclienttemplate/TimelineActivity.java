@@ -35,7 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
     // Request code used by the activity, can be any number as long as it is unique to the request
-    public static final int REQUEST_CODE = 17;
+    public static final int REQUEST_CODE = 20;
 
     private SwipeRefreshLayout swipeContainer;
 
