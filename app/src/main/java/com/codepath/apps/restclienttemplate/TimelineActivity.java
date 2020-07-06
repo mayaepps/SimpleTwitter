@@ -44,7 +44,6 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter tweetsAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +67,7 @@ public class TimelineActivity extends AppCompatActivity {
             public void onReplyClick(int position) {
                 // make sure the position exists
                 if (position != RecyclerView.NO_POSITION) {
-                    // get the movie at the position just clicked on
+                    // get the tweet at the position just clicked on
                     Tweet clickedTweet = tweets.get(position);
 
                     Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);

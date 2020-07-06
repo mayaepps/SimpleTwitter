@@ -117,5 +117,4 @@ public class ComposeActivity extends AppCompatActivity {
         // Close the activity and pass tweet to parent
         finish();
     }
-
 }

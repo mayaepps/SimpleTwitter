@@ -52,7 +52,7 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		// Adding parameters for the API call
 		params.put("count", 25); // Number of tweets requested
-		params.put("since_id", 1); // Time limit on how long ago they were posted
+		params.put("since_id", 1); // Limit on how long ago they were posted
 		client.get(apiUrl, params, handler);
 	}
 
